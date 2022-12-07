@@ -1,4 +1,4 @@
-// data publisher
+// data user (client)
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -6,13 +6,14 @@
 #include <ESP8266WiFiMulti.h>
 ESP8266WiFiMulti WiFiMulti;
 
-const char *ssid = "ESP8266-Access-Point";
+const char *ssid = "Edge_network";
 const char *password = "123456789";
 
 // Your IP address or domain name with URL path
 const char *serverNameTemp = "http://192.168.4.1/temperature";
 const char *serverNameHumi = "http://192.168.4.1/humidity";
 const char *serverNamePres = "http://192.168.4.1/pressure";
+const char *serverPatientData = "http://192.168.4.1/data";
 
 // #include <Wire.h>
 // #include <Adafruit_GFX.h>
@@ -28,6 +29,7 @@ const char *serverNamePres = "http://192.168.4.1/pressure";
 String temperature;
 String humidity;
 String pressure;
+String patient_data;
 
 unsigned long previousMillis = 0;
 const long interval = 5000;
@@ -65,9 +67,10 @@ void loop() {
       temperature = httpGETRequest(serverNameTemp);
       humidity = httpGETRequest(serverNameHumi);
       pressure = httpGETRequest(serverNamePres);
+      // patient_data = httpGETRequest(serverPatientData);
       Serial.println("Temperature: " + temperature + " *C - Humidity: " +
                      humidity + " % - Pressure: " + pressure + " hPa");
-
+      // Serial.println("Patient Data: " + patient_data);
       // save the last HTTP GET Request
       previousMillis = currentMillis;
     } else {
@@ -92,6 +95,7 @@ String httpGETRequest(const char *serverName) {
     Serial.print("HTTP Response code: ");
     Serial.println(httpResponseCode);
     payload = http.getString();
+    Serial.println(payload);
   } else {
     Serial.print("Error code: ");
     Serial.println(httpResponseCode);

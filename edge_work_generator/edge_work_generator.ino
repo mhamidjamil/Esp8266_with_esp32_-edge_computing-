@@ -24,6 +24,13 @@ String writePres() {
   return String(random(100, 150));
 }
 
+String user_data =
+    "SKdRiOAIL4NMiAkgrfmq@35.214!spine_position!2.406,608013.35,2.19!2.61!";
+String patient_data() {
+  // return data read from patient module
+  return user_data;
+}
+
 void setup() {
   // Serial port for debugging purposes
   Serial.begin(115200);
@@ -47,8 +54,17 @@ void setup() {
   server.on("/pressure", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send_P(200, "text/plain", writePres().c_str());
   });
+  server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/plain", patient_data().c_str());
+  });
 
   server.begin();
 }
 
-void loop() {}
+void loop() {
+
+  if (Serial.available() > 0) {
+    user_data = Serial.readStringUntil('#');
+    Serial.println(user_data);
+  }
+}
