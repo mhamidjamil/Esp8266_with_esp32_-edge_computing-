@@ -1,9 +1,8 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266WiFi.h>
 
-
 // Configuration parameters for Access Point
-char *ssid_ap = "Edge_network";
+char *ssid_ap = "Edge_network_2";
 char *password_ap = "123456789";
 IPAddress ip(192, 168, 11,
              4); // arbitrary IP address (doesn't conflict w/ local network)
