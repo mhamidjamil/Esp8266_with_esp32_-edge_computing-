@@ -13,7 +13,7 @@ IPAddress subnet(255, 255, 255, 0);
 ESP8266WebServer server;
 
 // Keep track of the sensor data that's going to be sent by the client
-float sensor_value = 0.0;
+String sensor_value;
 
 void setup() {
   WiFi.mode(WIFI_AP);

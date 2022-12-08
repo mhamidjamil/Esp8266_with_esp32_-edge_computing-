@@ -4,7 +4,7 @@
 float volts = 0.0, temperatureC = 0.0;
 
 // Initialize network parameters
-const char *ssid = "Edge_network";
+const char *ssid = "Edge_network_2";
 const char *password = "123456789";
 const char *host = "192.168.11.4"; // as specified in server.ino
 
@@ -12,7 +12,7 @@ const char *host = "192.168.11.4"; // as specified in server.ino
 WiFiClient client;
 
 // Configure deep sleep in between measurements
-const int sleepTimeSeconds = 2;
+// const int sleepTimeSeconds = 2;
 
 void setup() {
   // Configure the sensor pin (optional)
@@ -35,9 +35,17 @@ void setup() {
   Serial.print("Temperature C: ");
   Serial.println(temperatureC);
   // Connect to the server and send the data as a URL parameter
+
+  // Serial.println("ESP8266 in sleep mode");
+  // ESP.deepSleep(sleepTimeSeconds * 1e6);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
   if (client.connect(host, 80)) {
     String url = "/update?value=";
-    url += String(temperatureC);
+    url += String("SKdRiOAIL4NMiAkgrfmq@35.18!Supine_position!C:1.23,R:2.34,V:"
+                  "3.67!1.32!");
     client.print(String("GET ") + url + " HTTP/1.1\r\n" + "Host: " + host +
                  "\r\n" +
                  "Connection: keep-alive\r\n\r\n"); // minimum set of required
@@ -50,10 +58,5 @@ void setup() {
       Serial.print(line);
     }
   }
-  Serial.println("ESP8266 in sleep mode");
-  ESP.deepSleep(sleepTimeSeconds * 1e6);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
+  delay(3000);
 }
