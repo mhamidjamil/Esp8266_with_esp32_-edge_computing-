@@ -16,6 +16,9 @@ ESP8266WebServer server;
 String sensor_value;
 
 void blynk(int times_);
+bool Data_validator(String tempstr);
+#define USER_ID_LENGTH strlen("SKdRiOAIL4NMiAkgrfmq")
+#define NO_OF_EXCLAMATION 4
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   WiFi.mode(WIFI_AP);
@@ -59,5 +62,41 @@ void blynk(int times_) {
     delay(50);
     pinMode(LED_BUILTIN, LOW);
     delay(50);
+  }
+}
+bool Data_validator(String tempstr) {
+  // Serial.println("Working on : " + tempstr);
+  String user_id = "";
+  int first_at = tempstr.indexOf('@');
+  if ((first_at + 1) == USER_ID_LENGTH) {
+    user_id = tempstr.substring(0, first_at);
+    if (USER_ID_LENGTH == strlen(user_id)) {
+      // int loop_ = 0, new_address = 0;
+      // do {
+      //   if (tempstr.indexOf('!', new_address) == -1) {
+      //     new_address = tempstr.indexOf('!', new_address);
+      //     loop_++;
+      //   } else {
+      //     Serial.println("NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
+      //                    " loop_ : " + String(loop_));
+      //     return false;
+      //   }
+      // } while (loop_ < NO_OF_EXCLAMATION);
+      if (tempstr.count('!') == NO_OF_EXCLAMATION) {
+        return true;
+      } else {
+        Serial.println("NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
+                       " tempstr.count('!') : " + String(tempstr.count('!')));
+        return false;
+      }
+    } else {
+      Serial.println("USER_ID_LENGTH : " + String(USER_ID_LENGTH) +
+                     " strlen(user_id) : " + String(strlen(user_id)));
+      return false;
+    }
+  } else {
+    Serial.println("first at : " + String(first_at) +
+                   " USER_ID_LENGTH : " + String(USER_ID_LENGTH));
+    return false;
   }
 }
