@@ -21,9 +21,9 @@ void setup() {
   WiFi.softAP(ssid_ap, password_ap);
   // Print IP Address as a sanity check
   Serial.begin(115200);
-  Serial.println();
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
+  // Serial.println();
+  // Serial.print("IP Address: ");
+  // Serial.println(WiFi.localIP());
   // Configure the server's routes
   server.on(
       "/",
@@ -46,7 +46,7 @@ void handleIndex() {
 
 void handleUpdate() {
   // The value will be passed as a URL argument
-  sensor_value = server.arg("value").toFloat();
+  sensor_value = server.arg("value");
   Serial.println(sensor_value);
   server.send(200, "text/plain", "Updated");
 }
