@@ -11,12 +11,15 @@ WiFiClient client;
 // Configure deep sleep in between measurements
 // const int sleepTimeSeconds = 2;
 
+void blynk(int times_);
 void setup() {
   // Connect to the server
+  pinMode(LED_BUILTIN, OUTPUT);
   WiFi.begin(ssid, password);
   Serial.begin(9600);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
+    blynk(5);
     delay(500);
   }
   Serial.println();
@@ -48,6 +51,8 @@ void loop() {
     //     Serial.print(line);
     //   }
     // }
+    blynk(2);
+    Serial.println("");
     Serial.println(patient_data);
     String url = "/update?value=";
     url += patient_data + "#";
@@ -61,7 +66,16 @@ void loop() {
     while (client.available()) {
       String line = client.readStringUntil('\r');
       Serial.print(line);
+      blynk(3);
       // delay(3000);
     }
+  }
+}
+void blynk(int times_) {
+  for (; times_ > 0; times_--) {
+    pinMode(LED_BUILTIN, HIGH);
+    delay(50);
+    pinMode(LED_BUILTIN, LOW);
+    delay(50);
   }
 }

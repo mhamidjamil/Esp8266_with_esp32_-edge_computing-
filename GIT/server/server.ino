@@ -15,12 +15,14 @@ ESP8266WebServer server;
 // Keep track of the sensor data that's going to be sent by the client
 String sensor_value;
 
+void blynk(int times_);
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(ip, gateway, subnet);
   WiFi.softAP(ssid_ap, password_ap);
   // Print IP Address as a sanity check
-  Serial.begin(115200);
+  Serial.begin(9600);
   // Serial.println();
   // Serial.print("IP Address: ");
   // Serial.println(WiFi.localIP());
@@ -49,4 +51,13 @@ void handleUpdate() {
   sensor_value = server.arg("value");
   Serial.println(sensor_value);
   server.send(200, "text/plain", "Updated");
+  blynk(3);
+}
+void blynk(int times_) {
+  for (; times_ > 0; times_--) {
+    pinMode(LED_BUILTIN, HIGH);
+    delay(50);
+    pinMode(LED_BUILTIN, LOW);
+    delay(50);
+  }
 }
