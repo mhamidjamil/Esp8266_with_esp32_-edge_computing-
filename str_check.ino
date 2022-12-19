@@ -1,7 +1,10 @@
 void blynk(int times_);
+// 3a2v3Vlb5UD6RFx0Eyg3@35.154!Spine_position!2.151,450670.54,2.12!2.79!#
 bool Data_validator(String tempstr);
 int USER_ID_LENGTH = 20;
 #define NO_OF_EXCLAMATION 4
+#define NO_OF_COMMAS 2
+int count_presence(String testStr, char toBeFound);
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600);
@@ -29,26 +32,32 @@ bool Data_validator(String tempstr) {
   int first_at = tempstr.indexOf('@');
   if (first_at == USER_ID_LENGTH) {
     user_id = tempstr.substring(0, first_at);
-    // int tempLength = user_id.length();
     if (USER_ID_LENGTH == user_id.length()) {
-      int loop_ = 0, new_address = 0;
-      for (int i = 0; i < NO_OF_EXCLAMATION + 1; i++) {
-        if (i <= NO_OF_EXCLAMATION) {
-          if (new_address < tempstr.length()) {
-            new_address = tempstr.indexOf('!', new_address + 1);
-            loop_++;
+      if (count_presence(tempstr, '!') == NO_OF_EXCLAMATION) {
+        if (count_presence(tempstr, ',') == NO_OF_COMMAS) {
+          if (count_presence(tempstr, '#') == 1) {
+            if (count_presence(tempstr, '@') == 1) {
+              return true;
+            } else {
+              Serial.println("NO_OF_AT : 1, Found in input : " +
+                             String(count_presence(tempstr, '@')));
+              return false;
+            }
           } else {
-            Serial.println("new_address : " + String(new_address) +
-                           " tempstr.length() : " + String(tempstr.length()));
+            Serial.println("NO_OF_HASH : 1, Found in input : " +
+                           String(count_presence(tempstr, '#')));
             return false;
           }
+        } else {
+          Serial.println(
+              "NO_OF_COMMAS : " + String(NO_OF_COMMAS) +
+              " Found in input : " + String(count_presence(tempstr, ',')));
+          return false;
         }
-      }
-      if (loop_ == NO_OF_EXCLAMATION + 1) {
-        return true;
       } else {
-        Serial.println("loop_ : " + String(loop_) +
-                       " NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION));
+        Serial.println(
+            "NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
+            " Found in input : " + String(count_presence(tempstr, '!')));
         return false;
       }
 
@@ -63,4 +72,13 @@ bool Data_validator(String tempstr) {
     return false;
   }
   //   return
+}
+int count_presence(String testStr, char toBeFound) {
+  int count = 0;
+  for (int i = 0; i < testStr.length(); i++) {
+    if (testStr[i] == toBeFound) {
+      count++;
+    }
+  }
+  return count;
 }
