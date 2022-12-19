@@ -16,9 +16,12 @@ ESP8266WebServer server;
 String sensor_value;
 
 void blynk(int times_);
+// 3a2v3Vlb5UD6RFx0Eyg3@35.154!Spine_position!2.151,450670.54,2.12!2.79!#
 bool Data_validator(String tempstr);
-#define USER_ID_LENGTH strlen("SKdRiOAIL4NMiAkgrfmq")
+#define USER_ID_LENGTH 20
 #define NO_OF_EXCLAMATION 4
+#define NO_OF_COMMAS 2
+int count_presence(String testStr, char toBeFound);
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   WiFi.mode(WIFI_AP);
@@ -64,34 +67,45 @@ void blynk(int times_) {
     delay(50);
   }
 }
+
 bool Data_validator(String tempstr) {
   // Serial.println("Working on : " + tempstr);
   String user_id = "";
   int first_at = tempstr.indexOf('@');
-  if ((first_at + 1) == USER_ID_LENGTH) {
+  if (first_at == USER_ID_LENGTH) {
     user_id = tempstr.substring(0, first_at);
-    if (USER_ID_LENGTH == strlen(user_id)) {
-      // int loop_ = 0, new_address = 0;
-      // do {
-      //   if (tempstr.indexOf('!', new_address) == -1) {
-      //     new_address = tempstr.indexOf('!', new_address);
-      //     loop_++;
-      //   } else {
-      //     Serial.println("NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
-      //                    " loop_ : " + String(loop_));
-      //     return false;
-      //   }
-      // } while (loop_ < NO_OF_EXCLAMATION);
-      if (tempstr.count('!') == NO_OF_EXCLAMATION) {
-        return true;
+    if (USER_ID_LENGTH == user_id.length()) {
+      if (count_presence(tempstr, '!') == NO_OF_EXCLAMATION) {
+        if (count_presence(tempstr, ',') == NO_OF_COMMAS) {
+          if (count_presence(tempstr, '#') == 1) {
+            if (count_presence(tempstr, '@') == 1) {
+              return true;
+            } else {
+              Serial.println("NO_OF_AT : 1, Found in input : " +
+                             String(count_presence(tempstr, '@')));
+              return false;
+            }
+          } else {
+            Serial.println("NO_OF_HASH : 1, Found in input : " +
+                           String(count_presence(tempstr, '#')));
+            return false;
+          }
+        } else {
+          Serial.println(
+              "NO_OF_COMMAS : " + String(NO_OF_COMMAS) +
+              " Found in input : " + String(count_presence(tempstr, ',')));
+          return false;
+        }
       } else {
-        Serial.println("NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
-                       " tempstr.count('!') : " + String(tempstr.count('!')));
+        Serial.println(
+            "NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
+            " Found in input : " + String(count_presence(tempstr, '!')));
         return false;
       }
+
     } else {
       Serial.println("USER_ID_LENGTH : " + String(USER_ID_LENGTH) +
-                     " strlen(user_id) : " + String(strlen(user_id)));
+                     " strlen(user_id) : " + String(user_id.length()));
       return false;
     }
   } else {
@@ -99,4 +113,14 @@ bool Data_validator(String tempstr) {
                    " USER_ID_LENGTH : " + String(USER_ID_LENGTH));
     return false;
   }
+  //   return
+}
+int count_presence(String testStr, char toBeFound) {
+  int count = 0;
+  for (int i = 0; i < testStr.length(); i++) {
+    if (testStr[i] == toBeFound) {
+      count++;
+    }
+  }
+  return count;
 }

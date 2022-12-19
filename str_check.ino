@@ -1,7 +1,7 @@
 void blynk(int times_);
 // 3a2v3Vlb5UD6RFx0Eyg3@35.154!Spine_position!2.151,450670.54,2.12!2.79!#
 bool Data_validator(String tempstr);
-int USER_ID_LENGTH = 20;
+#define USER_ID_LENGTH 20
 #define NO_OF_EXCLAMATION 4
 #define NO_OF_COMMAS 2
 int count_presence(String testStr, char toBeFound);
