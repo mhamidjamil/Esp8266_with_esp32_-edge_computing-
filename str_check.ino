@@ -31,35 +31,27 @@ bool Data_validator(String tempstr) {
     user_id = tempstr.substring(0, first_at);
     // int tempLength = user_id.length();
     if (USER_ID_LENGTH == user_id.length()) {
-      //   int loop_ = 0, new_address = 0;
-      //   do {
-      //     if (tempstr.indexOf('!', new_address) != -1) {
-      //       new_address = tempstr.indexOf('!', new_address);
-      //       loop_++;
-      //     } else if (tempstr.indexOf('#', new_address) != -1) {
-      //       if (loop_ == NO_OF_EXCLAMATION) {
-      //         return true;
-      //       } else {
-      //         Serial.println(
-      //             "1_NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION) +
-      //             " loop_ : " + String(loop_));
-      //         return false;
-      //       }
-      //     } else {
-      //       Serial.println("NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION)
-      //       +
-      //                      " loop_ : " + String(loop_));
-      //       return false;
-      //     }
-      //   } while (loop_ <= NO_OF_EXCLAMATION);
-      //   if (loop_ == NO_OF_EXCLAMATION) {
-      return true;
-      //   } else {
-      //     Serial.println("2_NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION)
-      //     +
-      //                    " loop_ : " + String(loop_));
-      //     return false;
-      //   }
+      int loop_ = 0, new_address = 0;
+      for (int i = 0; i < NO_OF_EXCLAMATION + 1; i++) {
+        if (i <= NO_OF_EXCLAMATION) {
+          if (new_address < tempstr.length()) {
+            new_address = tempstr.indexOf('!', new_address + 1);
+            loop_++;
+          } else {
+            Serial.println("new_address : " + String(new_address) +
+                           " tempstr.length() : " + String(tempstr.length()));
+            return false;
+          }
+        }
+      }
+      if (loop_ == NO_OF_EXCLAMATION + 1) {
+        return true;
+      } else {
+        Serial.println("loop_ : " + String(loop_) +
+                       " NO_OF_EXCLAMATION : " + String(NO_OF_EXCLAMATION));
+        return false;
+      }
+
     } else {
       Serial.println("USER_ID_LENGTH : " + String(USER_ID_LENGTH) +
                      " strlen(user_id) : " + String(user_id.length()));
