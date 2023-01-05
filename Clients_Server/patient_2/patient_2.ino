@@ -1,3 +1,5 @@
+// same as patient_1.ino
+// 4/JAN/23 9:23 PM
 #include <ESP8266WiFi.h>
 
 // Initialize network parameters
