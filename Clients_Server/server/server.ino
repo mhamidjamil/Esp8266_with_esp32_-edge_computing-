@@ -56,7 +56,13 @@ void handleUpdate() {
   // The value will be passed as a URL argument
   sensor_value = server.arg("value");
   Serial.println(sensor_value);
-  server.send(200, "text/plain", "Updated");
+  if (Data_validator(sensor_value)) {
+    Serial.println("Data is valid");
+    server.send(200, "text/plain", "Updated");
+  } else {
+    Serial.println("Data is invalid");
+    server.send(200, "text/plain", "Invalid");
+  }
   blynk(3);
 }
 void blynk(int times_) {
