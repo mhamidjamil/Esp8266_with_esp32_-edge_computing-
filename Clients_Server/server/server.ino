@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
 
-SoftwareSerial patient_1(2, 3);
+SoftwareSerial ESP32_listener(16, 5);
 // Configuration parameters for Access Point
 char *ssid_ap = "Edge_network_2";
 char *password_ap = "123456789";
@@ -31,6 +31,7 @@ void setup() {
   WiFi.softAP(ssid_ap, password_ap);
   // Print IP Address as a sanity check
   Serial.begin(9600);
+  ESP32_listener.begin(9600);
   // Serial.println();
   // Serial.print("IP Address: ");
   // Serial.println(WiFi.localIP());
@@ -60,6 +61,7 @@ void handleUpdate() {
   Serial.println(sensor_value);
   if (Data_validator(sensor_value)) {
     Serial.println("Data is valid");
+    ESP32_listener.println(sensor_value);
     server.send(200, "text/plain", "Updated");
   } else {
     Serial.println("Data is invalid");

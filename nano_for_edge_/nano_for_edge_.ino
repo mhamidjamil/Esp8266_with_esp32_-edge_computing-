@@ -7,7 +7,7 @@ SoftwareSerial patient_1(2, 3);
 SoftwareSerial patient_2(4, 5);
 
 SoftwareSerial patient_3(6, 7); // buggy output generator for P1
-// SoftwareSerial patient_4(8, 9); // Patient ID : ZDwZTcwWNkCb0ESwLSuw
+SoftwareSerial patient_4(8, 9); // Patient ID : ZDwZTcwWNkCb0ESwLSuw
 int bugNumber = 0;
 // 1 for @ missing
 // 2 for ! missing
@@ -27,6 +27,7 @@ void setup() {
   patient_2.begin(9600);
 
   patient_3.begin(9600); // buggy output generator for P1
+  patient_4.begin(9600); // Patient ID : ZDwZTcwWNkCb0ESwLSuw
 }
 void loop() {
   dataSender(1);
@@ -40,6 +41,9 @@ void loop() {
   else {
     bugNumber = 1;
   }
+  delay(1500);
+  dataSender(4);
+  delay(2000);
 }
 void dataSender(int patient_number) {
   if (patient_number == 1) {
@@ -184,6 +188,44 @@ void dataSender(int patient_number) {
       patient_3.println("#");
     }
 
+  } else if (patient_number == 4) {
+    Serial.println("Patient 4");
+    patient_4.print("ZDwZTcwWNkCb0ESwLSuw@");
+
+    // temperature
+    patient_4.print(random(35, 37));
+    patient_4.print(".");
+    patient_4.print(random(1, 100));
+    patient_4.print("!");
+
+    // position
+    patient_4.print("Spine_positioN");
+    patient_4.print("!");
+
+    // GSR
+    patient_4.print(random(1, 3));
+    patient_4.print(".");
+    patient_4.print(random(1, 1000));
+
+    patient_4.print(",");
+
+    patient_4.print(random(100000, 999999));
+    patient_4.print(".");
+    patient_4.print(random(1, 100));
+
+    patient_4.print(",");
+
+    patient_4.print(random(0, 3));
+    patient_4.print(".");
+    patient_4.print(random(1, 100));
+    patient_4.print("!");
+
+    // snore
+    patient_4.print(random(1, 3));
+    patient_4.print(".");
+    patient_4.print(random(1, 100));
+    patient_4.print("!");
+    patient_4.println("#");
   } else {
     Serial.println("Invalid patient number");
   }
