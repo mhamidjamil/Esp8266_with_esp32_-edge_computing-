@@ -2,8 +2,8 @@
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
 
-SoftwareSerial ESP32_listener(16, 5);
-SoftwareSerial ESP32_listener_2(4, 0);
+SoftwareSerial ESP32_listener(16, 5);  // for 9600 baud rate
+SoftwareSerial ESP32_listener_2(4, 0); // for 115200 baud rate
 
 // Configuration parameters for Access Point
 char *ssid_ap = "Edge_network_2";
