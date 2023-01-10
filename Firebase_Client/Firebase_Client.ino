@@ -2,8 +2,8 @@
 #include "Network.h"
 #include <Ticker.h>
 
-// #include <SoftwareSerial.h>
-// SoftwareSerial ESP32_listener(15, 2);
+#include <SoftwareSerial.h>
+SoftwareSerial ESP32_listener(15, 2);
 
 #ifndef ESP32
 #pragma message(THIS EXAMPLE IS FOR ESP32 ONLY !)
@@ -108,7 +108,7 @@ bool Update_values() {
 
 void setup() {
   Serial.begin(115200);
-  //   ESP32_listener.begin(9600);
+  ESP32_listener.begin(9600);
   // pinMode(RED, OUTPUT);
   // pinMode(GREEN, OUTPUT);
   // pinMode(BLUE, OUTPUT);
@@ -141,18 +141,18 @@ void loop() {
     // filterd_temperatur = Serial.parseFloat();
     // network->firestoreDataUpdate(temperature, 0);
   }
-  //   if (ESP32_listener.available() > 0) {
-  //     data_input = true;
-  //     tempStr = "";
-  //     while (ESP32_listener.available()) {
-  //       tempStr = ESP32_listener.readStringUntil('#');
-  //     }
-  //     if (tempStr.length() > 10) {
-  //       DataManager(tempStr);
-  //     } else {
-  //       Serial.println("Data not valid");
-  //     }
-  // }
+  if (ESP32_listener.available() > 0) {
+    data_input = true;
+    tempStr = "";
+    while (ESP32_listener.available()) {
+      tempStr = ESP32_listener.readStringUntil('#');
+    }
+    if (tempStr.length() > 10) {
+      DataManager(tempStr);
+    } else {
+      Serial.println("Data not valid");
+    }
+  }
   if (!tasksEnabled) {
     // Wait 2 seconds to let system settle down
     delay(2000);
