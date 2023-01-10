@@ -3,6 +3,8 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial ESP32_listener(16, 5);
+SoftwareSerial ESP32_listener_2(4, 0);
+
 // Configuration parameters for Access Point
 char *ssid_ap = "Edge_network_2";
 char *password_ap = "123456789";
@@ -32,6 +34,7 @@ void setup() {
   // Print IP Address as a sanity check
   Serial.begin(9600);
   ESP32_listener.begin(9600);
+  ESP32_listener_2.begin(115200);
   // Serial.println();
   // Serial.print("IP Address: ");
   // Serial.println(WiFi.localIP());
@@ -60,8 +63,9 @@ void handleUpdate() {
   sensor_value = server.arg("value");
   Serial.println(sensor_value);
   if (Data_validator(sensor_value)) {
-    Serial.println("Data is valid");
+    Serial.println("Data is valid (sent to server)");
     ESP32_listener.println(sensor_value);
+    ESP32_listener_2.println(sensor_value);
     server.send(200, "text/plain", "Updated");
   } else {
     Serial.println("Data is invalid");
