@@ -113,7 +113,7 @@ void setup() {
   // pinMode(GREEN, OUTPUT);
   // pinMode(BLUE, OUTPUT);
   Serial.println();
-  Serial.println("After S3 board");
+  Serial.println("Esp32 edge (server)");
 
   //  initDisplay();
   initNetwork();
